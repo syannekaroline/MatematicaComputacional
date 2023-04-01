@@ -80,7 +80,7 @@ def SerieDeTaylor(X=1, N=1):
     Série de taylor: e^x = somatório de X**k/k! N vezes"""
     if X < 0:
         y = -X
-        return 1/math.exp(y)
+        return 1/SerieDeTaylor(y,N)
     result = 0.0
     for k in range(0, N+1):
         SAux = X**k/math.factorial(k)
@@ -104,7 +104,7 @@ def SerieDeTaylor_NoOverflow(X=1, N=1):
 
     if X < 0:
         y = -X
-        return 1/math.exp(y)
+        return 1/SerieDeTaylor_NoOverflow(y)
     result = 0.0
     try:
         for k in range(0, N+1):
@@ -121,3 +121,31 @@ def SerieDeTaylor_NoOverflow(X=1, N=1):
             f"\n \033[31mNúmero máximo de interações (valor de N máximo que a máquina foi capaz de calcular) = {k}\033[m")
         print(
             f" Máximo Valor Aproximado para X = {X} e N = {k-2} -> ", SerieDeTaylor_NoOverflow(X, k-2))
+        
+def ExercicioSerieTaylor_NoOverflow():
+    """Exercício pra receber os parâmetros X e N da série de taylor do usuário e mostrar o resultado"""
+    print("{:#^60}".format("Série de Taylor - Sem Overflow"))
+    X = int(input("Insira o valor de X da série de taylor: "))
+    N = int(input("Insira o valor de N da série de taylor: "))
+    print(f"Para X = {X} e N = {N}, o cálculo da série de taylor é {SerieDeTaylor_NoOverflow(X,N)}")
+    print("#"*75,"\n")
+    
+def SerieDeTaylorAprox(X,N):
+    "Função que calcula a série de taylor. Em caso de overflow o máximo valor que a máquina conseguiu armazenar é retornado"
+
+    if X < 0:
+        y = -X
+        return 1/SerieDeTaylor(y)
+    result = 0.0
+    try :
+        for k in range(0, N+1):
+            SAux = X**k/math.factorial(k)
+            # somatório
+            result += SAux
+        return result
+    except:
+        print('\n\033[31m ############ OVERFLOW ##################### \033[m \n')
+        print(f"Número máximo de iterações (valor de N máximo que a máquina foi capaz de calcular) = {k}")
+        aprox = SerieDeTaylor(X, k-2) #valor aproximado
+        print(f" Máximo Valor Aproximado para X = {X} e N = {k-2} -> ", aprox)
+        return aprox

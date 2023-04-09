@@ -2,39 +2,38 @@
 # implementação de métodos de refinamento - matemática computacional
 import math
 import numpy as np
+from Algoritmos import exercicioPratico02
+
 # MÉTODO 1 - MÉTODO DA POSIÇÃO FALSA:
 
 
-def posicaoFalsa(funcao, intervalo, erro1, erro2,it_max = 10000):
+def posicaoFalsa(funcao, intervalo, erro= exercicioPratico0.precisao_maquina(),erro2= exercicioPratico0.precisao_maquina(),it_max = 100000):
     """Função que realiza o método da posição falsa pra achar aproximação da raiz real de uma função.
     Parâmetros:
     função : função pro cálculo ex: função = lambda x:x**3-9*x+3 
     intevalo: lista contendo o intervalo considerado da função. ex: [-1,1]
-    erro: critério de parada pra precisão requerida ex:  0.000000001 """
+    erro: critério de parada pra precisão requerida ex:  0.000000001 
+    Retorna uma tupla contendo a raiz, o y na raiz e o número de iterções realizadas, respectivamente."""
     ai = intervalo[0]
     bi = intervalo[1]
-    x= (ai*funcao(ai) - bi*funcao(bi))/(funcao(bi) - funcao(ai))  # média ponderada
-    # variável q armazena o número de iterações realizadas ( bissecções realizadas)
-    i = 1
-
+    x = (ai*funcao(ai) - bi*funcao(bi))/(funcao(bi) - funcao(ai))  # média ponderada
+    i = 0 # variável q armazena o número de iterações realizadas ( bissecções realizadas)
     # verificar se o método se aplica a função
-    if funcao(ai)*funcao(bi) < 0:
+    if funcao(ai)*funcao(bi)< 0:
 
-        while abs(bi-ai) > erro1 and abs(funcao(x)) > erro2 and i < it_max:  # testa o critério de parada: enquanto a diferença entre intervalo for maior que o erro -> enquanto f(pi) > precisão
-            # calcula o ponto médio ponderado
+        while abs(bi-ai) > erro and i<it_max and abs(funcao(x)) > erro2: # testa o critério de parada: enquanto a diferença entre intervalo for maior que o erro -> enquanto f(pi) > precisão
+        #calcula o ponto médio
+
             x = (ai*funcao(ai) - bi*funcao(bi))/(funcao(bi) - funcao(ai))  # média ponderada
-            # Mostre todos os passos do algoritmo com os valores de 𝑎𝑖, 𝑏𝑖 e 𝑝i
-            #print("a{}: {};  b{}: {};  x{}: {};".format(i, ai, i, bi, i, x))
+            #print("a{}: {};  b{}: {};  p{}: {};".format(i,ai,i,bi,i,pi)) # Mostre todos os passos do algoritmo com os valores de 𝑎𝑖, 𝑏𝑖 e 𝑝i
 
-            if abs(funcao(x)) < erro2 :
-                return (x, funcao(x), i)
-            
-            elif funcao(ai)*funcao(x) > 0:
-                ai = x
-            else:  # a raiz está mais a direita de ai -> diminui o intervalo fazendo ai receber o ponto médio calculado
+            # realiza a bissecção no intervalo verificando o sinal das extremidades na função
+            if funcao(ai)*funcao(x)<0: # significa que a raíz pertence a esse intervalo -> está mais a esquerda de bi
                 bi = x
-            i += 1
-        return (x, funcao(x), i)
+            else: # a raiz está mais a direita de ai -> diminui o intervalo fazendo ai receber o ponto médio calculado
+                ai = x
+            i+=1
+        return (x,funcao(x),i)
     else:
         print("Não existe raíz real neste intervalo!")
 

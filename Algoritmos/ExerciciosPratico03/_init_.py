@@ -78,9 +78,6 @@ def derivada(coeficientesf):
     f = np.poly1d(coeficientesf)
     return f.deriv()
 
-# print(derivada([1,-9,3]))
-
-
 def newton_raphson(f, fdx, x0, e1=0.000001, e2=0.000001, it_max=100000):
     """Função que calcula a raiz de uma função f polinomial usando o método de newton-raphson
     parâmetros :
@@ -92,7 +89,7 @@ def newton_raphson(f, fdx, x0, e1=0.000001, e2=0.000001, it_max=100000):
     Retorna uma tupla contendo a raiz, o y na raiz e o número de iterções realizadas, respectivamente.
     """
     if (abs(f(x0)) < e1):
-        return x0
+        return (x0,f(x0),0)
 
     x = x0 - (f(x0)/fdx(x0))
     print("x{}: {}; f(x) : {}; ".format(0, x0, f(x0)))
@@ -115,13 +112,13 @@ def metodoSecante(f, x0, x1, e1=0.000001, e2=0.000001, it_max=1000000):
     if (abs(f(x0)) < e1):
         return (x0, f(x0), 0)
 
-    if (abs(f(x1)) > e1 or abs(x1 - x0) > e1):
+    if (abs(f(x1)) < e1 or abs(x1 - x0) < e1):
         return (x1, f(x1), 0)
 
     x2 = x1 - (f(x1) / (f(x1)-f(x0))) * x1-x0
     k = 1
     while (abs(f(x2)) > e1 and abs(x2 - x1) > e2 and k < it_max):
-        x2 = x2 - ((f(x1) / (f(x1)-f(x0))) * (x1-x0))
+        x2 = x1 - ((f(x1) / (f(x1)-f(x0))) * (x1-x0))
         x0 = x1
         x1 = x2
         k += 1

@@ -73,6 +73,8 @@ def precisao_maquina_ref():
     #print(f"Precisão da máquina: {prec}")
 
 def SerieDeTaylor(X=1,N=1):
+    """Função que calcula a série de taylor (e^x).\nParâmetros:\nX= valor de x espoente do número de euler\nN = o limite superior do cálculo da série de taylor\nRetorna o resultado da série de taylor"""
+
     if X <0:
         y=-X
         return 1/math.exp(y)
@@ -84,6 +86,8 @@ def SerieDeTaylor(X=1,N=1):
     return(result)
 
 def SerieDeTaylor_NoOverflow(X=1,N=1):
+    """Exercício que calcula a série de taylor"""
+
     if X <0:
         y=-X
         return 1/math.exp(y)
@@ -99,10 +103,14 @@ def SerieDeTaylor_NoOverflow(X=1,N=1):
             result+=SAux
         return(result)
     except:
-        print(f"\n \033[31mNúmero máximo de interações (valor de N máximo que a máquina foi capaz de calcular) = {k}\033[m")
-        print(f" Máximo Valor Aproximado para X = {X} e N = {k-2} -> ",SerieDeTaylor_NoOverflow(X,k-2))
+        print(f"\n \033[31mNúmero máximo de iterações (valor de N máximo que a máquina foi capaz de calcular) = {k}\033[m")
+        result=SerieDeTaylor_NoOverflow(X,k-2)
+        print(f" Máximo Valor Aproximado para X = {X} e N = {k-2} -> ",result)
+        return result
 
 def ExercicioSerieTaylor():
+    """Exercício que calcula a série de taylor recebendo o valor de x e N do usuário."""
+
     print("{:#^60}".format("\nSérie de Taylor\n"))
     X=int(input("Insira o valor de X da série de taylor: "))
     N = int(input("Insira o valor de N da série de taylor: "))

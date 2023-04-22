@@ -2,12 +2,12 @@
 # implementação de métodos de refinamento - matemática computacional
 import math
 import numpy as np
-from Algoritmos import exercicioPratico02
+from algoritmos import exercicioPratico02
 
 # MÉTODO 1 - MÉTODO DA POSIÇÃO FALSA:
 
 
-def posicaoFalsa(funcao, intervalo, erro= exercicioPratico0.precisao_maquina(),erro2= exercicioPratico0.precisao_maquina(),it_max = 100000):
+def posicaoFalsa(funcao, intervalo, erro= exercicioPratico02.precisao_maquina(),erro2= exercicioPratico02.precisao_maquina(),it_max = 100000):
     """Função que realiza o método da posição falsa pra achar aproximação da raiz real de uma função.
     Parâmetros:
     função : função pro cálculo ex: função = lambda x:x**3-9*x+3 
@@ -107,7 +107,15 @@ def newton_raphson(f, fdx, x0, e1=0.000001, e2=0.000001, it_max=100000):
 
 
 def metodoSecante(f, x0, x1, e1=0.000001, e2=0.000001, it_max=1000000):
-
+    """Função que calcula a raiz de uma função f polinomial usando o método da secante
+    parâmetros :
+    f -> função f(x).
+    x0 -> aproximação inicial
+    x1= aproximação inicial 2 
+    e1 e e2 -> precisões
+    it_max -> número de iterações máximas.
+    Retorna uma tupla contendo a raiz, o y na raiz e o número de iterções realizadas, respectivamente.
+    """
     if (abs(f(x0)) < e1):
         return (x0, f(x0), 0)
 

@@ -1,9 +1,18 @@
 import numpy as np
 import pandas as pd
-from exercicioPratico01 import precisao_maquina
 import math
 
-  
+def precisao_maquina():
+    """Função que calcula a precisão da máquina com referência igual a 1"""
+    A=1
+    S=2
+
+    while(S>1):
+        A=A/2
+        S=1+A
+    prec=2*A
+
+    return prec
 # Resolve o sistema triangular superior.
 def SistemaTriangularSuperior(Ax,b):
   """Função que resolve um sistema linear triangular superior do tipo  𝐴𝑥 = b que recebe como parâmetro """

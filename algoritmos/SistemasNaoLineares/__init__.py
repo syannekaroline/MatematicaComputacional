@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import sympy as sym
 from exercicioPratico01 import precisao_maquina
-from exercicioPratico04 import EliminacaoDeGauss
+from SistemasLineares import EliminacaoDeGauss
 
 def getMatrizJacobiana(F,n_variaveis):
     """Função que gera a matriz jacobiana de uma matriz de funções que recebe como parâmetro\n

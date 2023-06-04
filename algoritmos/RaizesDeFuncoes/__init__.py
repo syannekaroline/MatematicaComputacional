@@ -1,6 +1,5 @@
 
 import pandas as pd, numpy as np
-import math
 import matplotlib.pyplot as plt
 
 def AvaliaSinalFunc(coeficientes,ValoresX=[-1,1],IsIntervalo = True):

@@ -130,10 +130,10 @@ def interpNewton(x, y, xi):
     for i in range(n-j):
       fdd[i][j] = (fdd[i+1][j-1] - fdd[i][j-1])/(x[i+j]-x[i])
     
-  # Imprimindo diferenças divididas.
-  print("Tabela das diferenças Divididas:\n")
-  fdd_table = pd.DataFrame(fdd)
-  print(fdd_table)
+  # # Imprimindo diferenças divididas.
+  # print("Tabela das diferenças Divididas:\n")
+  # fdd_table = pd.DataFrame(fdd)
+  # print(fdd_table)
     
   #Interpolação para xi.
   xterm = 1
@@ -165,9 +165,9 @@ def interpNewtonGrafico(x,y,ShowGraph=True):
     for i in range(n-j):
       fdd[i][j] = (fdd[i+1][j-1] - fdd[i][j-1])/(x[i+j]-x[i])
 
-  print(" < Tabela de diferenças divididas >\n")
-  fdd_table = pd.DataFrame(fdd)
-  print(fdd_table)
+  # print(" < Tabela de diferenças divididas >\n Colunas : Ordem\nLinhas: índice do x")
+  # fdd_table = pd.DataFrame(fdd)
+  # print(fdd_table)
   
   yt = []
 
@@ -191,12 +191,11 @@ def interpNewtonGrafico(x,y,ShowGraph=True):
 
 
 def Results(f,pontosx,pontosy,spline=True):
-    """ Função que plota os valores de f em pontos tabelados juntamente com a função interpoladora calculada pelo método de newton parâmetro spline.\n"""
+    """ Função que plota os valores de f em pontos tabelados juntamente com a função interpoladora calculada pelo método de newton com parâmetro spline.\n"""
     x=np.arange(min(pontosx),max(pontosx)+0.0001,0.01)
     y= f(x)
     t  = x
     yt = []
-    yt2 =[]
 
     for i in t:
         yt.append(interpNewton(pontosx, pontosy, i))
@@ -221,3 +220,4 @@ def Results(f,pontosx,pontosy,spline=True):
     plt.legend()
     plt.grid(True)
     plt.show()
+

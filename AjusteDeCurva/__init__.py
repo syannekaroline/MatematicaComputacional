@@ -3,8 +3,6 @@ import math
 from numpy.linalg import solve
 import matplotlib.pyplot as plt
 import pandas as pd
-
-
 class MQ:
   def __init__(self):
     self.alfas = []
@@ -26,6 +24,14 @@ class MQ:
     if printValues:
       print("Valores do sistema linear Criado:")
       print(f"Alfas: {self.alfas}")
+
+  def fit_seno(self, x, y, G=[lambda x:1, lambda x:x], printValues=False):
+
+    self.alfas=[]
+    self.G=G
+    z = [np.arcsin(yi) for yi in y] # calcula o vetor z ln(y)
+    # linearização
+    self.fit(x, z, self.G,printValues) # calcula os valores de alfa com vetor z g1=1 e g2 = x
 
   def fit_geom(self, x, y, GGeom=[lambda x:1, lambda x:x], printValues=False):
     """O método realiza a linearização da curva geométrica, calculando o logaritmo natural dos valores y e,
@@ -108,6 +114,13 @@ class MQ:
         s += self.alfas[i] * self.Ggeom[i](x)
 
     return s
+    
+  def calc_seno(self, x):
+    """Calcula o valor da função seno no ponto x."""
+    s = 0
+    for i in range(len(self.G)):
+        s += self.alfas[i] * self.G[i](x)
+    return np.sin(s)
   
   def plotPontos(self,x,y):
     """Método que plota o gráfico dos pontos tabelados"""
@@ -117,7 +130,7 @@ class MQ:
     plt.grid()
     plt.show()
 
-  def PrintAjusteCurva(self,x,y,Linear=True,exp=False,hip=False,geom=False):
+  def PrintAjusteCurva(self,x,y,Linear=True,exp=False,hip=False,geom=False,seno=False):
     """Método que mostra o gráfico do ajuste de curva.Os alfas já devem ter sido calculados com o método fit."""
     x_line = np.linspace(min(x)-0.0001, max(x)+0.0001, 100)
 
@@ -129,14 +142,18 @@ class MQ:
     if exp:
       self.fit_exp(x,y,self.Gexp)
       y_nlinear = list(map(lambda x: self.calc_exp(x), x_line))
-      plt.plot(x_line,y_nlinear,'b-',label= 'Função Não linear')
+      plt.plot(x_line,y_nlinear,'b-',label= 'Função Não linear - exp')
     if hip: 
       # self.fit(x,1/np.array(y),self.Gexp)
       y_nlinear = list(map(lambda x: self.calc_hip(x), x_line))
-      plt.plot(x_line,y_nlinear,'b-',label= 'Função Não linear')
+      plt.plot(x_line,y_nlinear,'b-',label= 'Função Não linear - hip')
     if geom:
       y_nlinear = list(map(lambda x: self.calc_geom(x), x_line))
-      plt.plot(x_line,y_nlinear,'b-',label= 'Função Não linear')
+      plt.plot(x_line,y_nlinear,'b-',label= 'Função Não linear- geo')
+    if seno:
+      y_nlinear = list(map(lambda x: self.calc_seno(x), x_line))
+      plt.plot(x_line,y_nlinear,'b-',label= 'Função Não linear - seno')
+      
     plt.plot(x, y,'ro')# plota como pontos 
     plt.legend()
     plt.grid()
@@ -155,3 +172,5 @@ def MinimoQuadrado(xi, yi):
   a = ((np.linalg.inv((V.transpose()).dot(V))).dot(V.transpose())).dot(yi)
     
   return a
+
+

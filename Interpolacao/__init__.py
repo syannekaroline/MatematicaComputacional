@@ -267,3 +267,10 @@ def gerar_pontos_aleatorios(n):
         ponto = random.uniform(-1, 1)
         pontos.append(ponto)
     return pontos
+
+
+  
+x = [0.5,0.6,0.7,0.8,0.9,1.0]
+y = [1.65,1.82,2.01,2.23,2.46,2.72]
+intervalo = np.arange(0.6,0.7,0.01)
+p = interpNewtonGrafico(x,y,MostrartabelaDD= True)

@@ -49,7 +49,7 @@ print(sistemaVandermonde(x,fx))
 """
 
 
-def interpLagrange(xp,x,y):
+def interpLagrange(xp,x,y,grau=None):
   """Função que Calcula o valor y da função interpoladora.\n
     Parâmetros:\n
     xp = Ponto da Interpolação.\n
@@ -58,8 +58,10 @@ def interpLagrange(xp,x,y):
     Retorno:\n
     yp = valor y do ponto da interpolação.
     """
-  yp = 0
+  n=grau if grau != None else len(x)-1
+  
   n =len(x)-1
+  
   for k in range(0,n+1):
     p = 1
     for j in range(0,n+1):
@@ -71,7 +73,7 @@ def interpLagrange(xp,x,y):
   return yp
 
 
-def interpLagrangeGrafico(x,y):
+def interpLagrangeGrafico(x,y,grau=None):
   """Função que encontra o polinômio Interpolador pela forma de Lagrange.\n
   Parâmetros:\n
   x = vetor com valores x pra formação do polinômio Interpolador\n
@@ -82,7 +84,8 @@ def interpLagrangeGrafico(x,y):
   """
   Intervalo=np.arange(min(x),max(x)+0.0001,0.01)
 
-  n =len(x) - 1
+  n=grau if grau != None else len(x)-1
+
   yt = []
   # Valor inicial de g(xp).
   
@@ -105,8 +108,28 @@ def interpLagrangeGrafico(x,y):
   plt.show()
 
   return yt
-
 ################# método de newton ###################
+
+
+def TabelaDD(x, y):
+  """Função que recebe pontos tabelados e imprime a tabela de diferençsa divididas"""
+  
+  n = len(x)
+  fdd = [[None for x in range(n)] for x in range(n)]
+
+  for i in range(n):
+    fdd[i][0] = y[i] 
+
+  for j in range(1,n):
+    for i in range(n-j):
+      fdd[i][j] = (fdd[i+1][j-1] - fdd[i][j-1])/(x[i+j]-x[i])
+  
+  
+  print(" < Tabela de diferenças divididas >\n Colunas : Ordem\nLinhas: índice do x")
+  fdd_table = pd.DataFrame(fdd)
+  print(fdd_table)
+ 
+ 
 def interpNewton(x, y, xi):
   """Função calcula a interpolação pela forma de newton.\n
   Parâmetros:\n
@@ -130,10 +153,6 @@ def interpNewton(x, y, xi):
     for i in range(n-j):
       fdd[i][j] = (fdd[i+1][j-1] - fdd[i][j-1])/(x[i+j]-x[i])
     
-  # # Imprimindo diferenças divididas.
-  # print("Tabela das diferenças Divididas:\n")
-  # fdd_table = pd.DataFrame(fdd)
-  # print(fdd_table)
     
   #Interpolação para xi.
   xterm = 1
@@ -145,7 +164,7 @@ def interpNewton(x, y, xi):
   #Retornando g(xi).
   return yint
 
-def interpNewtonGrafico(x,y,ShowGraph=True):
+def interpNewtonGrafico(x,y,ShowGraph=True, MostrartabelaDD=False):
   """Função que Encontra o polinômio interpolador pela forma de newton.\n
   Parâmetros:\n
   x = vetor com valores x pra formação do polinômio Interpolador\n
@@ -164,10 +183,11 @@ def interpNewtonGrafico(x,y,ShowGraph=True):
   for j in range(1,n):
     for i in range(n-j):
       fdd[i][j] = (fdd[i+1][j-1] - fdd[i][j-1])/(x[i+j]-x[i])
-
-  # print(" < Tabela de diferenças divididas >\n Colunas : Ordem\nLinhas: índice do x")
-  # fdd_table = pd.DataFrame(fdd)
-  # print(fdd_table)
+  
+  if MostrartabelaDD:
+    print(" < Tabela de diferenças divididas >\n Colunas : Ordem\nLinhas: índice do x")
+    fdd_table = pd.DataFrame(fdd)
+    print(fdd_table)
   
   yt = []
 
@@ -188,14 +208,31 @@ def interpNewtonGrafico(x,y,ShowGraph=True):
 
   return yt
 
+def Results(f,pontosx,pontosy):
+    """Função que plota os valores de f em pontos tabelados juntamente com a função interpoladora calculada pelo método de newton.\n"""
+    x=np.arange(min(pontosx),max(pontosx)+0.0001,0.01)
+    y= f(x)
+    yt = []
+    for i in x:
+        yt.append(interpNewton(pontosx, pontosy, i))
 
+    plt.plot(x,yt,marker = '', label= 'Função Interpoladora',color = 'green')
+    plt.plot(pontosx,pontosy,'ro')
+    plt.plot(x, y,'b--', label= 'Função f(x)')
+    plt.xlabel('x')
+    plt.ylabel('f(x)')
+    plt.title('Results()\nGráfico da função f(x)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
-def Results(f,pontosx,pontosy,spline=True):
+def Results_spline(f,pontosx,pontosy,spline=True):
     """ Função que plota os valores de f em pontos tabelados juntamente com a função interpoladora calculada pelo método de newton com parâmetro spline.\n"""
     x=np.arange(min(pontosx),max(pontosx)+0.0001,0.01)
     y= f(x)
     t  = x
     yt = []
+    yt2 =[]
 
     for i in t:
         yt.append(interpNewton(pontosx, pontosy, i))
@@ -221,3 +258,12 @@ def Results(f,pontosx,pontosy,spline=True):
     plt.grid(True)
     plt.show()
 
+
+import random
+
+def gerar_pontos_aleatorios(n):
+    pontos = []
+    for _ in range(n):
+        ponto = random.uniform(-1, 1)
+        pontos.append(ponto)
+    return pontos
